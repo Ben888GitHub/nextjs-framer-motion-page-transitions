@@ -2,11 +2,29 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { photos } from "../data/photos";
 import Image from "next/image";
+import { motion } from "framer-motion";
+const container = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+const projectVariant = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+};
 
 export default function Home() {
   return (
     <Layout>
-      <div className="p-10 grid grid-cols-1 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="visible"
+        className="p-10 grid grid-cols-1 lg:grid-cols-3 gap-10 max-w-6xl mx-auto"
+      >
         <div className="bg-gradient-to-tr from-purple-600 to-indigo-600 p-8 flex rounded-2xl items-center">
           <h1 className="font-extrabold text-3xl xl:text-5xl text-indigo-200 leading-tight">
             Page Transitions in{" "}
@@ -25,7 +43,10 @@ export default function Home() {
         </div>
         {photos.map((photo) => (
           <Link href={`/photo/${photo.id}`} scroll={false} key={photo.id}>
-            <a className="overflow-hidden flex rounded-2xl shadow-xl hover:scale-105 hover:shadow-2xl hover:z-10 transition-all ease-in-out">
+            <motion.div
+              variants={projectVariant}
+              className="cursor-pointer overflow-hidden flex rounded-2xl shadow-xl hover:scale-105 hover:shadow-2xl hover:z-10 transition-all ease-in-out"
+            >
               <Image
                 src={photo.src}
                 alt={photo.title}
@@ -39,10 +60,10 @@ export default function Home() {
                   objectFit: "cover",
                 }}
               />
-            </a>
+            </motion.div>
           </Link>
         ))}
-      </div>
+      </motion.div>
 
       <footer>
         Made by{" "}
